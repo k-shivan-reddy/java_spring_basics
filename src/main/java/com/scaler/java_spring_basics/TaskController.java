@@ -1,23 +1,20 @@
 package com.scaler.java_spring_basics;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 public class TaskController {
-    int taskId= 0;
+    AtomicInteger taskId= new AtomicInteger(0);
     private  List<Task> taskList = new ArrayList<Task>();
     public TaskController()
     {
-        taskList.add(new Task(1,"x","y","1-22-2022"));
-        taskList.add(new Task(2,"x","y","1-22-2022"));
-        taskList.add(new Task(3,"x","y","1-22-2022"));
-        taskId++;
+        taskList.add(new Task(taskId.incrementAndGet(),"x","y","1-22-2022"));
+        taskList.add(new Task(taskId.incrementAndGet(),"x","y","1-22-2022"));
+        taskList.add(new Task(taskId.incrementAndGet(),"x","y","1-22-2022"));
     }
     @GetMapping("/tasks")
     List<Task> getTasks()
@@ -28,9 +25,25 @@ public class TaskController {
     @PostMapping("/tasks")
     Task postTask(@RequestBody Task task)
     {
-        taskId++;
-        var newTask = new Task(taskId,"x","y","1-22-2022");
+        var newTask = new Task(taskId.incrementAndGet(),"x","y","1-22-2022");
         taskList.add(newTask);
         return newTask;
+    }
+    @GetMapping("/task/{id}")
+    Task getTasks(@PathVariable("id") Integer id)
+    {
+        Task ret = null;
+        for(var tsk:taskList)
+        {
+            if(tsk.getId() == id){
+             ret = tsk;
+            }
+        }
+        return  ret;
+    }
+    @DeleteMapping("/task/{id}")
+    Task deleteTask(@PathVariable("id") Integer id)
+    {
+        return  null;
     }
 }
