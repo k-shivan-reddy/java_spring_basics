@@ -1,5 +1,6 @@
-package com.scaler.java_spring_basics;
+package com.scaler.java_spring_basics.controllers;
 
+import com.scaler.java_spring_basics.entities.Task;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
